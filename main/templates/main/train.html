@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+{% if upload %}
+<!-- Show class count and classes, partitioned with a "|" -->
+<div style="color: white; text-align: center;">
+    Class Count: {{classes}}
+</div>
+<div style="color: white; text-align: center;">
+    Class Names:
+    <br>
+    {% for class in class_names %}
+    <span>
+        {{class}} 
+    </span>
+    {% if not forloop.last %}|{% endif %}
+    {% if forloop.counter|divisibleby:3 and not forloop.last %}
+        <br>
+    {% endif %}
+    {% endfor %}
+    <br>
+    <br>
+    <form method="post" action="{% url 'start_training' %}">
+        {% csrf_token %}
+        <input type="hidden" name="class_names" value="{{ class_names }}">
+        <input type="hidden" name="dirs" value="{{dirs}}">
+        <input type="hidden" name="model_key" value="{{model_key}}">
+        <input type="hidden" name="priority" value="{{priority}}">
+        <input type="hidden" name="layers" value="{{layers}}">
+        <button style="background-color: transparent; color: white; font-size: 1.5em; padding: 10px; border: none;" type="submit"> Click to train</button>
+    </form>
+</div>
+
+{% else %}
+<script>
+    function selectFile(e) {
+        var theFile = e.target.files[0];
+        $("#id_dir_name").val(theFile.name);
+    }
+
+</script>
+<!-- Form, letting users upload their folder, as well as picking the layers and submitting -->
+<form method="post" enctype="multipart/form-data" action="{% url 'train' %}">
+    {% csrf_token %}
+    <input type="hidden" name="dir_name" id="id_dir_name">
+    <input type="file" name="file" onchange="selectFile(event)" required="" id="id_file">
+        <div >
+            <h3 style="color:white;">Layers:</h3>
+            <dl style="color:white;margin-left: 20px;">
+                <dt>Convolutional 2D</dt>
+                <dd>conv2d</dd>
+    
+                <dt>Max Pooling 2D</dt>
+                <dd>maxpooling2d</dd>
+    
+                <dt>Flatten</dt>
+                <dd>flatten</dd>
+    
+                <dt>Dense</dt>
+                <dd>dense</dd>
+            </dl>
+        </div>
+        <h9 style="color:white">Enter layers:</h9>
+        <br>
+        <h9 style="color: white;">Leave blank for default layering</h9>
+        <br>
+        <h9 style="color: white;">Split each layer with a comma and a space ", "</h9>
+        <input name="layers" id="layers" sstyle="color:white;">
+        <!-- Check if there is an error message, if so, show it -->
+        {% if msg %}
+        <div style="color:white;">
+            {{msg}}
+        </div>
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+
+{% endif %}
+
+{% endblock %}

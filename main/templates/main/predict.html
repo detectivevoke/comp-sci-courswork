@@ -1,0 +1,93 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+<script>
+    function selectFile(e) {
+        var theFile = e.target.files[0];
+        $("#id_dir_name").val(theFile.name);
+    }
+
+</script>
+
+
+<style>
+    /* Center the button */
+    .file-input-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    /* Style the button */
+    .file-input {
+        border: 2px solid #ffffff;
+        background-color: transparent;
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Hover effect */
+    .file-input:hover {
+        background-color: #ffffff; /* White background on hover */
+        color: #000000; /* Black text on hover */
+    }
+
+    .list {
+        text-align: left;
+        padding: 10;
+    }
+
+    .list li {
+        margin-bottom: 10px;
+    }
+</style>
+
+
+
+<div>
+
+    <!-- Check if there is an error message, if so, show it -->
+
+    {% if msg %}
+    <div>
+        <h3 style="color: white;">
+        {{msg}}
+        </h3>
+    </div>
+
+    {% else %}
+    <!-- Form to allow user to classify their image, and showing the possible model keys -->
+
+    <form method="post" action="{% url 'classify' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="dir_name" id="id_dir_name">
+        <input type="file" name="file" onchange="selectFile(event)" required="" id="id_file">
+        <br><br>
+        <div>
+            <h4 style="color: white; padding-bottom: 10px;">Enter Model: </h3>
+            <div class="list">
+                <ul style="color: white;">
+                    {% for folder in folders %}
+                    <li> • {{ folder }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <br><br>
+        <div>
+            <h5 style="color: white;">Enter Key:</h3>
+            <input type="text" name="model_key" id="model_key">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+
+{% block body %}
+
+<!-- Check if there is an error message, if so, show it -->
+
+<div>
+
+<div>
+    {% if msg %}
+            <h3 style="color: white;">{{msg}}</h3>
+        {% endif %}
+</div>
+<!-- Form to allow user to log in -->
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    
+    <label for="id_username">Username:</label>
+    {{ form.username }}
+    
+    <label for="id_password">Password:</label>
+    {{ form.password }}
+    
+    <button type="submit">Login</button>
+</form>
+</div>
+
+{% endblock %}

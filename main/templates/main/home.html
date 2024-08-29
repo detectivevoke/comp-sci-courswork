@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+<style>
+
+    /* Style for the buttons and button container */
+.button-form {
+    display: inline-block;
+}
+
+.button {
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    margin: 5px; 
+}
+/* The writing on home page, as well as the buttons to redirect, in the middle of the page */
+</style>
+<div style="text-align: center; font-size: 40px; color: white"><u>Image Classification</u></div>
+<br>
+<div style="text-align: center; font-size: 25px; color: white">This website is designed to allow users to use and train models to be able to classify images of their own.</div>
+<br>
+<br>
+<div style="text-align: center;">
+    <form method="get" action="classify" class="button-form">
+        <button class="button"><b>Classify an image</b></button>
+    </form>
+    <form method="get" action="train" class="button-form">
+        <button class="button"><b>Train a model</b></button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+
+<h2 style="color: white;">Register</h2>
+<!-- Check if there is an error message, if so, show it -->
+
+{% if msg %}
+    <h3 style="color: white;">{{msg}}</h3>
+{% endif %}
+<!-- Form to allow user to register-->
+<form method="post" action="{% url 'register' %}">
+        
+
+        {% csrf_token %}
+        <div style="color: white;">
+        {{ form.as_p }}
+    </div>
+
+        <button type="submit">Register</button>
+
+{% endblock %}

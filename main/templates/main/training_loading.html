@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+
+<script>
+    function updateProgress() {
+        fetch('http://127.0.0.1:4999/get_progress')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                const progressPercentage = data.progress_percentage;
+                document.getElementById('progress-info').innerText = `Model is currently at ${progressPercentage}% progress.`;
+                document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            })
+            .catch(error => console.error('Error fetching progress:', error));
+    }
+
+    setInterval(updateProgress, 1000);
+</script>
+
+<div style="text-align: center; margin-top: 50px;">
+    <h2>Training Progress</h2>
+    <p id="progress-info">Model is currently at {{ progress_percentage }}% progress.</p>
+    <div class="progress-bar" id="progress-bar" style="width: 1%">
+    </div>
+    </div>
+
+{% endblock %}
